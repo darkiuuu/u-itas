@@ -1,0 +1,432 @@
+/* --- App.css --- */
+:root {
+  --dusty-pink: #D88A9A;     
+  --pastel-pink: #ECC7D1;    
+  --cream-beige: #F7F2E6;    
+  --sage-green: #9EA279;     
+  --taupe-brown: #6F5F53;     
+  --white: #FFFFFF;
+  --black-shadow: rgba(0, 0, 0, 0.05);
+  --sage-green-dark: #818461; 
+}
+
+/* 1. RESETEO TOTAL (Vence a cualquier estilo por defecto) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--cream-beige);
+  color: var(--taupe-brown);
+  overflow-x: hidden;
+}
+
+/* 2. CONTENEDOR PRINCIPAL (Para que el footer siempre quede abajo) */
+.salon-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* 3. HEADER / BANNER (Ancho completo y majestuoso en PC) */
+.header-principal {
+  background-color: var(--pastel-pink);
+  width: 100%;
+  padding: 6rem 2rem; /* Más alto para dar efecto de "portada" */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-bottom: 3px solid var(--dusty-pink);
+  box-shadow: 0 4px 15px var(--black-shadow);
+}
+
+.header-principal h1 {
+  font-size: 4rem; /* Letra mucho más grande en PC */
+  color: var(--dusty-pink);
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.header-principal p {
+  font-size: 1.2rem;
+  color: var(--taupe-brown);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.navegacion {
+  margin-top: 2.5rem;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap; /* Para que no se rompa en celulares */
+}
+
+/* Botones */
+.btn-nav, .btn-agendar {
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-nav {
+  background-color: transparent;
+  color: var(--dusty-pink);
+  border: 2px solid var(--dusty-pink);
+}
+
+.btn-nav:hover {
+  background-color: var(--white);
+}
+
+.btn-agendar {
+  background-color: var(--dusty-pink);
+  color: var(--white);
+  border: 2px solid var(--dusty-pink);
+  box-shadow: 0 4px 10px rgba(216, 138, 154, 0.3);
+}
+
+.btn-agendar:hover {
+  background-color: var(--taupe-brown); /* Contraste elegante al pasar el mouse */
+  border-color: var(--taupe-brown);
+  color: var(--white);
+}
+
+/* 4. SECCIONES DE CONTENIDO (Centradas con un límite de ancho para no estirarse feo) */
+.seccion-catalogo, .seccion-formulario {
+  width: 100%;
+  max-width: 1200px; /* Límite de ancho para monitores gigantes */
+  margin: 0 auto;    /* Centrado perfecto */
+  padding: 4rem 2rem;
+  flex: 1;           /* Ocupa el espacio restante */
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--taupe-brown);
+  margin-bottom: 3rem;
+}
+
+.text-loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--sage-green-dark);
+}
+
+/* 5. GRILLA DEL CATÁLOGO (Se adapta de 1 a 4 columnas automáticamente) */
+.grid-catalogo {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.tarjeta-modelo {
+  background: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.tarjeta-modelo:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.tarjeta-modelo img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.tarjeta-modelo h3 {
+  padding: 1.5rem;
+  color: var(--dusty-pink);
+  font-size: 1.3rem;
+  text-align: center;
+  margin: 0;
+}
+
+/* 6. FORMULARIOS (Centrados y elegantes) */
+.seccion-formulario {
+  max-width: 700px;
+}
+
+.formulario {
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(111, 95, 83, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.formulario label {
+  font-weight: bold;
+  color: var(--taupe-brown);
+  font-size: 1rem;
+  margin-bottom: -15px;
+}
+
+.formulario input, .formulario textarea {
+  padding: 15px;
+  border: 2px solid var(--cream-beige);
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #FAFAFA;
+  transition: border-color 0.3s;
+}
+
+.formulario input:focus, .formulario textarea:focus {
+  border-color: var(--dusty-pink);
+  outline: none;
+}
+
+.formulario input[type="file"] {
+  padding: 15px;
+  border: 2px dashed var(--pastel-pink);
+  background-color: var(--white);
+  color: var(--taupe-brown);
+}
+
+.btn-submit {
+  background-color: var(--dusty-pink);
+  color: var(--white);
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.btn-submit:hover {
+  background-color: var(--taupe-brown);
+}
+
+/* 7. FOOTER (Ancho completo) */
+.footer-stellar {
+  background-color: var(--taupe-brown);
+  color: var(--cream-beige);
+  width: 100%;
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 4px solid var(--dusty-pink);
+}
+
+.footer-stellar h3 {
+  font-size: 2rem;
+  color: var(--pastel-pink);
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+/* 8. DISEÑO RESPONSIVO (Ajustes para celulares) */
+@media (max-width: 768px) {
+  .header-principal {
+    padding: 4rem 1rem;
+  }
+  .header-principal h1 {
+    font-size: 3rem;
+  }
+  .formulario {
+    padding: 2rem 1.5rem;
+  }
+}
+/* --- NUEVOS ESTILOS VISUALES --- */
+
+/* Le damos un fondo degradado al Header para que no se vea plano */
+.header-principal {
+  background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--cream-beige) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Un pequeño detalle visual (círculo decorativo) para dar textura */
+.header-principal::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  filter: blur(20px);
+}
+
+/* Tarjetas para las citas de la clienta */
+.grid-citas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 2rem;
+}
+
+.tarjeta-cita {
+  background: var(--white);
+  border-left: 6px solid var(--dusty-pink);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px var(--black-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tarjeta-cita h3 {
+  color: var(--taupe-brown);
+  font-size: 1.2rem;
+  border-bottom: 1px solid var(--cream-beige);
+  padding-bottom: 10px;
+}
+
+.cita-detalle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+/* Etiquetas visuales para el estado de la cita */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.badge.pendiente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.badge.confirmada {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.precio-destacado {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--dusty-pink);
+  margin-top: 10px;
+}
+
+/* =========================================
+   PANEL DE ADMINISTRADORA STELLAR
+   ========================================= */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--cream-beige);
+}
+
+/* El menú lateral oscuro y elegante */
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--taupe-brown);
+  color: var(--cream-beige);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+}
+
+.admin-sidebar-logo {
+  font-size: 2.2rem;
+  color: var(--pastel-pink);
+  text-align: center;
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+  border-bottom: 1px solid rgba(236, 199, 209, 0.2);
+  padding-bottom: 1rem;
+}
+
+.admin-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--cream-beige);
+  padding: 15px 20px;
+  text-align: left;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-menu-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px);
+}
+
+.admin-menu-btn.activo {
+  background-color: var(--dusty-pink);
+  color: var(--white);
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(216, 138, 154, 0.3);
+}
+
+/* Área de trabajo central */
+.admin-content {
+  flex: 1;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.admin-header h2 {
+  margin: 0;
+  text-align: left;
+  font-size: 2.2rem;
+}
+
+.admin-perfil {
+  background-color: var(--white);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px var(--black-shadow);
+  color: var(--dusty-pink);
+  font-weight: bold;
+}
+
+.admin-tarjeta-blanca {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(111, 95, 83, 0.08);
+  flex: 1;
+}
