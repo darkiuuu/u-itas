@@ -59,14 +59,14 @@ function App() {
   };
 
   const cargarTodasLasCitas = () => {
-    axios.get('http://localhost:8000/api/citas/').then(r => {
+    axios.get('https://u-itas.onrender.com/api/citas/').then(r => {
       const citasOrdenadas = r.data.sort((a, b) => b.id - a.id);
       setTodasLasCitas(citasOrdenadas);
     }).catch(console.error);
   };
 
-  const cargarCatalogo = () => axios.get('http://localhost:8000/api/catalogo/').then(r => setCatalogo(r.data)).catch(console.error);
-  const cargarInsumos = () => axios.get('http://localhost:8000/api/insumos/').then(r => setInsumosDisponibles(r.data)).catch(console.error);
+  const cargarCatalogo = () => axios.get('https://u-itas.onrender.com/api/catalogo/').then(r => setCatalogo(r.data)).catch(console.error);
+  const cargarInsumos = () => axios.get('https://u-itas.onrender.com/api/insumos/').then(r => setInsumosDisponibles(r.data)).catch(console.error);
 
   useEffect(() => { 
     cargarCatalogo(); 
@@ -75,7 +75,7 @@ function App() {
   }, []);
 
   const cargarMisCitas = () => {
-    axios.get('http://localhost:8000/api/citas/').then(response => {
+    axios.get('https://u-itas.onrender.com/api/citas/').then(response => {
         const citasCliente = response.data.filter(cita => cita.cliente === usuarioActual?.id);
         setMisCitas(citasCliente.sort((a, b) => b.id - a.id));
         setVista('mis-citas');
@@ -86,7 +86,7 @@ function App() {
     e.preventDefault();
     const endpoint = modoAuth === 'login' ? 'login' : 'registro';
     try {
-      const respuesta = await axios.post(`http://localhost:8000/api/${endpoint}/`, { 
+      const respuesta = await axios.post(`https://u-itas.onrender.com/api/${endpoint}/`, { 
         username: e.target.email.value, 
         email: e.target.email.value, 
         password: e.target.password.value 
@@ -155,7 +155,7 @@ function App() {
 
     const toastId = toast.loading('Enviando tu solicitud...');
     try {
-      await axios.post('http://localhost:8000/api/citas/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await axios.post('https://u-itas.onrender.com/api/citas/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.dismiss(toastId);
       toast.success('¡Cita agendada con éxito!');
       setFechaElegida("");
@@ -174,7 +174,7 @@ function App() {
     
     const toastId = toast.loading('Cancelando cita...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaId}/cancelar/`, { cancelado_por: 'cliente' });
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/cancelar/`, { cancelado_por: 'cliente' });
       toast.dismiss(toastId);
       toast.success('Cita cancelada correctamente.');
       cargarMisCitas(); 
@@ -189,7 +189,7 @@ function App() {
     if(!window.confirm("🚨 ¿Estás segura de cancelar esta cita? La clienta será notificada en su panel de que la cita fue cancelada.")) return;
     const toastId = toast.loading('Cancelando...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaSeleccionada.id}/cancelar/`, { cancelado_por: 'admin' });
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaSeleccionada.id}/cancelar/`, { cancelado_por: 'admin' });
       toast.dismiss(toastId);
       toast.success('Cita cancelada.');
       setCitaSeleccionada(null); 
@@ -204,7 +204,7 @@ function App() {
     if(!window.confirm("🔄 ¿Deseas deshacer la cancelación? La cita volverá exactamente al estado en el que estaba.")) return;
     const toastId = toast.loading('Restaurando...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaSeleccionada.id}/restaurar/`);
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaSeleccionada.id}/restaurar/`);
       toast.dismiss(toastId);
       toast.success('¡Cita restaurada con éxito!');
       setCitaSeleccionada(null); 
@@ -219,7 +219,7 @@ function App() {
     if(!window.confirm("🔄 ¿Deseas deshacer la cancelación? La cita volverá exactamente al estado en el que estaba.")) return;
     const toastId = toast.loading('Restaurando...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaId}/restaurar/`);
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/restaurar/`);
       toast.dismiss(toastId);
       toast.success('¡Cita restaurada con éxito!');
       cargarTodasLasCitas(); 
@@ -247,7 +247,7 @@ function App() {
     }
     setInfoClienta(null); 
     try {
-      const res = await axios.get(`http://localhost:8000/api/clientes/${cita.cliente}/perfil/`);
+      const res = await axios.get(`https://u-itas.onrender.com/api/clientes/${cita.cliente}/perfil/`);
       setInfoClienta(res.data);
     } catch (e) {
       setInfoClienta(null);
@@ -298,7 +298,7 @@ function App() {
     const seCambioHora = fechaHoraAdmin !== horaOriginal;
 
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaSeleccionada.id}/cotizar/`, { 
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaSeleccionada.id}/cotizar/`, { 
         precio_base: precioBase, 
         detalles: detallesCalculadora, 
         recomendacion: recomendacionAdmin,
@@ -320,7 +320,7 @@ function App() {
   const aceptarPresupuesto = async (citaId) => {
     const toastId = toast.loading('Procesando...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaId}/aceptar/`);
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/aceptar/`);
       toast.dismiss(toastId);
       toast.success('¡Genial! Sigue las instrucciones para tu abono.');
       cargarMisCitas(); 
@@ -334,7 +334,7 @@ function App() {
     }
     const toastId = toast.loading('Avisando a Stellar...');
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaId}/solicitar_cambios/`, { motivo: motivoCambio });
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/solicitar_cambios/`, { motivo: motivoCambio });
       toast.dismiss(toastId);
       toast.success('¡Mensaje enviado! Revisaremos tu cita nuevamente.');
       setCitaPidiendoCambio(null); 
@@ -347,7 +347,7 @@ function App() {
   };
 
   const ajustarExtraClienta = async (citaId, itemIndex, operacion) => {
-    try { await axios.post(`http://localhost:8000/api/citas/${citaId}/ajustar_extra/`, { index: itemIndex, operacion: operacion }); cargarMisCitas(); } catch (error) { toast.error('Error'); }
+    try { await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/ajustar_extra/`, { index: itemIndex, operacion: operacion }); cargarMisCitas(); } catch (error) { toast.error('Error'); }
   };
 
   const confirmarCitaOficial = async () => {
@@ -361,7 +361,7 @@ function App() {
     const seCambioHora = fechaHoraAdmin !== horaOriginal;
 
     try {
-      await axios.post(`http://localhost:8000/api/citas/${citaSeleccionada.id}/confirmar_final/`, {
+      await axios.post(`https://u-itas.onrender.com/api/citas/${citaSeleccionada.id}/confirmar_final/`, {
         fecha_hora: fechaHoraAdmin,
         hora_cambiada: seCambioHora,
         duracion_estimada: parseInt(duracionAdmin)
@@ -377,11 +377,11 @@ function App() {
   };
 
   const confirmarCitaDirecta = async (citaId) => {
-    try { await axios.post(`http://localhost:8000/api/citas/${citaId}/confirmar_final/`); toast.success('¡Cita confirmada!'); cargarTodasLasCitas(); } catch (error) { toast.error('Error'); }
+    try { await axios.post(`https://u-itas.onrender.com/api/citas/${citaId}/confirmar_final/`); toast.success('¡Cita confirmada!'); cargarTodasLasCitas(); } catch (error) { toast.error('Error'); }
   };
 
   const guardarNotasClienta = async () => {
-    try { await axios.patch(`http://localhost:8000/api/clientes/${citaSeleccionada.cliente}/perfil/`, { notas_internas: infoClienta?.notas_internas || "" }); toast.success('¡Notas guardadas!'); } catch (error) { toast.error(`Error al guardar notas`); }
+    try { await axios.patch(`https://u-itas.onrender.com/api/clientes/${citaSeleccionada.cliente}/perfil/`, { notas_internas: infoClienta?.notas_internas || "" }); toast.success('¡Notas guardadas!'); } catch (error) { toast.error(`Error al guardar notas`); }
   };
 
   const agendarEnCalendario = (cita) => {
@@ -408,22 +408,22 @@ function App() {
     formData.append('nombre', e.target.nombreDiseno.value);
     if (e.target.descripcionDiseno.value) formData.append('descripcion', e.target.descripcionDiseno.value);
     formData.append('imagen', e.target.fotoNueva.files[0]);
-    try { await axios.post('http://localhost:8000/api/catalogo/', formData, { headers: { 'Content-Type': 'multipart/form-data' }}); toast.success('¡Agregado!'); e.target.reset(); cargarCatalogo(); } catch (error) { toast.error('Error.'); }
+    try { await axios.post('https://u-itas.onrender.com/api/catalogo/', formData, { headers: { 'Content-Type': 'multipart/form-data' }}); toast.success('¡Agregado!'); e.target.reset(); cargarCatalogo(); } catch (error) { toast.error('Error.'); }
   };
 
   const eliminarDelCatalogo = async (id) => {
     if (!window.confirm("¿Borrar?")) return;
-    try { await axios.delete(`http://localhost:8000/api/catalogo/${id}/`); toast.success('Borrado.'); cargarCatalogo(); } catch (error) { toast.error('Error.'); }
+    try { await axios.delete(`https://u-itas.onrender.com/api/catalogo/${id}/`); toast.success('Borrado.'); cargarCatalogo(); } catch (error) { toast.error('Error.'); }
   };
 
   const crearInsumo = async (e) => {
     e.preventDefault();
-    try { await axios.post('http://localhost:8000/api/insumos/', { nombre: e.target.nombreInsumo.value, precio: parseFloat(e.target.precioInsumo.value) }); toast.success('¡Agregado!'); e.target.reset(); cargarInsumos(); } catch (error) { toast.error(`Error`); }
+    try { await axios.post('https://u-itas.onrender.com/api/insumos/', { nombre: e.target.nombreInsumo.value, precio: parseFloat(e.target.precioInsumo.value) }); toast.success('¡Agregado!'); e.target.reset(); cargarInsumos(); } catch (error) { toast.error(`Error`); }
   };
 
   const borrarInsumo = async (id) => {
     if (!window.confirm("¿Estás segura?")) return;
-    try { await axios.delete(`http://localhost:8000/api/insumos/${id}/`); toast.success('Borrado.'); cargarInsumos(); } catch (error) { toast.error('Error.'); }
+    try { await axios.delete(`https://u-itas.onrender.com/api/insumos/${id}/`); toast.success('Borrado.'); cargarInsumos(); } catch (error) { toast.error('Error.'); }
   };
 
   const citasFiltradas = todasLasCitas.filter(cita => {
