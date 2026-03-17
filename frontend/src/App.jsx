@@ -4,7 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import './App.css';
 
 
-const API_URL = "https://u-itas.onrender.com";
+const API_URL = 'https://u-itas.onrender.com';
 
 function App() {
   const [catalogo, setCatalogo] = useState([]);
