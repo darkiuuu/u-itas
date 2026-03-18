@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css';
-const API_BASE = import.meta.env.VITE_API_URL;
+const API_BASE = "https://u-itas.onrender.com/api";
 
 function App() {
   const [catalogo, setCatalogo] = useState([]);
