@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import './App.css';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 function App() {
   const [catalogo, setCatalogo] = useState([]);
@@ -59,11 +60,11 @@ function App() {
   };
 
   const cargarTodasLasCitas = () => {
-    axios.get('https://u-itas.onrender.com/api/citas/').then(r => {
-      const citasOrdenadas = r.data.sort((a, b) => b.id - a.id);
-      setTodasLasCitas(citasOrdenadas);
-    }).catch(console.error);
-  };
+  axios.get(`${API_BASE}/citas/`).then(r => {
+    const citasOrdenadas = r.data.sort((a, b) => b.id - a.id);
+    setTodasLasCitas(citasOrdenadas);
+  }).catch(console.error);
+};
 
   const cargarCatalogo = () => axios.get('https://u-itas.onrender.com/api/catalogo/').then(r => setCatalogo(r.data)).catch(console.error);
   const cargarInsumos = () => axios.get('https://u-itas.onrender.com/api/insumos/').then(r => setInsumosDisponibles(r.data)).catch(console.error);
@@ -85,12 +86,19 @@ function App() {
   const manejarAuth = async (e) => {
     e.preventDefault();
     const endpoint = modoAuth === 'login' ? 'login' : 'registro';
+    
+    // 👇 ESTO ES LO NUEVO: Te mostrará un mensajito mientras carga
+    const toastId = toast.loading('Conectando con Stellar, esto puede tardar un minuto...');
+
     try {
-      const respuesta = await axios.post(`https://u-itas.onrender.com/api/${endpoint}/`, { 
+      const respuesta = await axios.post(`${API_BASE}/${endpoint}/`, { 
         username: e.target.email.value, 
         email: e.target.email.value, 
         password: e.target.password.value 
       });
+      
+      // 👇 Si funciona, quita el mensaje de carga
+      toast.dismiss(toastId); 
       
       setUsuarioActual(respuesta.data);
       cargarTodasLasCitas(); 
@@ -103,8 +111,10 @@ function App() {
         setVista('agendar');
       }
     } catch (error) {
-      const mensajeError = error.response?.data?.error || 'Error de conexión con el servidor';
-      toast.error(mensajeError, { duration: 4000 });
+      // 👇 Si falla, quita el mensaje de carga y te avisa el error
+      toast.dismiss(toastId); 
+      const mensajeError = error.response?.data?.error || 'Error de conexión. Presiona F12 y revisa la consola.';
+      toast.error(mensajeError, { duration: 5000 });
     }
   };
 
