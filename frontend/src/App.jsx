@@ -5,6 +5,7 @@ import './App.css';
 const API_BASE = "https://u-itas.onrender.com/api";
 
 function App() {
+  const [ordenCitas, setOrdenCitas] = useState('recientes');
   const [catalogo, setCatalogo] = useState([]);
   const [misCitas, setMisCitas] = useState([]);
   const [todasLasCitas, setTodasLasCitas] = useState([]); 
@@ -832,16 +833,26 @@ function App() {
               <>
                 <header className="admin-header"><h2>Control de Solicitudes</h2><div className="admin-perfil">👑 Admin: {usuarioActual.email.split('@')[0]}</div></header>
                 <div className="admin-tarjeta-blanca">
-                  {!citaSeleccionada ? (
+{!citaSeleccionada ? (
                     <>
                       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '20px', alignItems: 'center'}}>
-                         <input 
-                           type="text" 
-                           placeholder="🔍 Buscar por Código o Estado..." 
-                           value={busqueda}
-                           onChange={(e) => setBusqueda(e.target.value)}
-                           style={{padding: '10px 15px', borderRadius: '8px', border: '2px solid var(--cream-beige)', width: '300px', outline: 'none', fontSize: '1rem', color: 'var(--taupe-brown)'}}
-                         />
+                         <div style={{display: 'flex', gap: '10px'}}>
+                            <input 
+                              type="text" 
+                              placeholder="🔍 Buscar por Código o Estado..." 
+                              value={busqueda}
+                              onChange={(e) => setBusqueda(e.target.value)}
+                              style={{padding: '10px 15px', borderRadius: '8px', border: '2px solid var(--cream-beige)', width: '300px', outline: 'none', fontSize: '1rem', color: 'var(--taupe-brown)'}}
+                            />
+                            <select 
+                              value={ordenCitas} 
+                              onChange={(e) => setOrdenCitas(e.target.value)}
+                              style={{ padding: '8px 15px', borderRadius: '8px', border: '1px solid var(--dusty-pink)', backgroundColor: 'white', color: 'var(--taupe-brown)', fontWeight: 'bold', cursor: 'pointer' }}
+                            >
+                              <option value="recientes">Nuevas primero</option>
+                              <option value="proximas">Citas próximas primero</option>
+                            </select>
+                         </div>
                          <button onClick={cargarTodasLasCitas} className="btn-submit" style={{padding: '10px 20px', fontSize: '1rem'}}>🔄 Actualizar Lista</button>
                       </div>
 
@@ -853,7 +864,7 @@ function App() {
                         </thead>
                         <tbody>
                           {citasFiltradas.length === 0 ? (<tr><td colSpan="5" style={{textAlign: 'center', padding: '20px', color: 'var(--sage-green-dark)'}}>No hay solicitudes que coincidan con tu búsqueda.</td></tr>) : (
-                            citasFiltradas.map(cita => (
+                            citasFiltradas.sort((a, b) => ordenCitas === 'proximas' ? new Date(a.fecha_hora) - new Date(b.fecha_hora) : b.id - a.id).map(cita => (
                               <tr key={cita.id} style={{borderBottom: '1px solid var(--cream-beige)', opacity: cita.estado === 'cancelada' ? 0.5 : 1}}>
                                 <td style={{padding: '15px'}}>
                                   <div style={{fontWeight: 'bold', color: 'var(--taupe-brown)'}}>#{cita.id}</div>
@@ -874,7 +885,7 @@ function App() {
                                 <td style={{padding: '15px', display: 'flex', gap: '10px', alignItems: 'center'}}>
                                   <button onClick={() => abrirEvaluacion(cita)} style={{background: 'var(--sage-green)', color: 'white', border: 'none', padding: '8px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold'}}>Ver 🔍</button>
                                   
-                                  {cita.estado === 'cancelada' && cita.cancelado_por === 'admin' && (
+                                  {cita.estado === 'cancelada' && (
                                     <button onClick={() => restaurarCitaDirecta(cita.id)} style={{background: '#ffc107', color: '#333', border: 'none', padding: '8px 15px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold'}}>🔄 Deshacer</button>
                                   )}
                                   
@@ -1022,7 +1033,7 @@ function App() {
                             </button>
                           )}
 
-                          {citaSeleccionada.estado === 'cancelada' && citaSeleccionada.cancelado_por === 'admin' && (
+                          {citaSeleccionada.estado === 'cancelada' && (
                             <button onClick={restaurarCitaAdmin} style={{background: '#ffc107', color: '#333', border: 'none', padding: '12px 30px', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer'}}>
                               🔄 Deshacer Cancelación
                             </button>
